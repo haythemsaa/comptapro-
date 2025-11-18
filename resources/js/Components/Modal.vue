@@ -1,123 +1,185 @@
+<template>
+    <teleport to="body">
+        <transition name="modal">
+            <div v-if="show" class="modal-overlay" @click.self="closeModal">
+                <div class="modal-container" :class="sizeClass">
+                    <div class="modal-header" v-if="$slots.header || title">
+                        <slot name="header">
+                            <h5 class="modal-title">{{ title }}</h5>
+                        </slot>
+                        <button type="button" class="modal-close" @click="closeModal" aria-label="Close">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <slot></slot>
+                    </div>
+
+                    <div class="modal-footer" v-if="$slots.footer">
+                        <slot name="footer"></slot>
+                    </div>
+                </div>
+            </div>
+        </transition>
+    </teleport>
+</template>
+
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, watch, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
     show: {
         type: Boolean,
-        default: false,
+        default: false
     },
-    maxWidth: {
+    title: {
         type: String,
-        default: '2xl',
+        default: ''
     },
-    closeable: {
+    size: {
+        type: String,
+        default: 'md',
+        validator: (value) => ['sm', 'md', 'lg', 'xl'].includes(value)
+    },
+    closable: {
         type: Boolean,
-        default: true,
-    },
+        default: true
+    }
 });
 
-const emit = defineEmits(['close']);
-const dialog = ref();
-const showSlot = ref(props.show);
+const emit = defineEmits(['close', 'update:show']);
 
-watch(
-    () => props.show,
-    () => {
-        if (props.show) {
-            document.body.style.overflow = 'hidden';
-            showSlot.value = true;
+const sizeClass = computed(() => `modal-${props.size}`);
 
-            dialog.value?.showModal();
-        } else {
-            document.body.style.overflow = '';
-
-            setTimeout(() => {
-                dialog.value?.close();
-                showSlot.value = false;
-            }, 200);
-        }
-    },
-);
-
-const close = () => {
-    if (props.closeable) {
+const closeModal = () => {
+    if (props.closable) {
         emit('close');
+        emit('update:show', false);
     }
 };
 
-const closeOnEscape = (e) => {
-    if (e.key === 'Escape') {
-        e.preventDefault();
-
-        if (props.show) {
-            close();
-        }
+const handleEscape = (e) => {
+    if (e.key === 'Escape' && props.show && props.closable) {
+        closeModal();
     }
 };
 
-onMounted(() => document.addEventListener('keydown', closeOnEscape));
+watch(() => props.show, (newValue) => {
+    if (newValue) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+});
+
+onMounted(() => {
+    document.addEventListener('keydown', handleEscape);
+});
 
 onUnmounted(() => {
-    document.removeEventListener('keydown', closeOnEscape);
-
+    document.removeEventListener('keydown', handleEscape);
     document.body.style.overflow = '';
-});
-
-const maxWidthClass = computed(() => {
-    return {
-        sm: 'sm:max-w-sm',
-        md: 'sm:max-w-md',
-        lg: 'sm:max-w-lg',
-        xl: 'sm:max-w-xl',
-        '2xl': 'sm:max-w-2xl',
-    }[props.maxWidth];
 });
 </script>
 
-<template>
-    <dialog
-        class="z-50 m-0 min-h-full min-w-full overflow-y-auto bg-transparent backdrop:bg-transparent"
-        ref="dialog"
-    >
-        <div
-            class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:px-0"
-            scroll-region
-        >
-            <Transition
-                enter-active-class="ease-out duration-300"
-                enter-from-class="opacity-0"
-                enter-to-class="opacity-100"
-                leave-active-class="ease-in duration-200"
-                leave-from-class="opacity-100"
-                leave-to-class="opacity-0"
-            >
-                <div
-                    v-show="show"
-                    class="fixed inset-0 transform transition-all"
-                    @click="close"
-                >
-                    <div
-                        class="absolute inset-0 bg-gray-500 opacity-75 dark:bg-gray-900"
-                    />
-                </div>
-            </Transition>
+<style scoped>
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
 
-            <Transition
-                enter-active-class="ease-out duration-300"
-                enter-from-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                enter-to-class="opacity-100 translate-y-0 sm:scale-100"
-                leave-active-class="ease-in duration-200"
-                leave-from-class="opacity-100 translate-y-0 sm:scale-100"
-                leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
-                <div
-                    v-show="show"
-                    class="mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full dark:bg-gray-800"
-                    :class="maxWidthClass"
-                >
-                    <slot v-if="showSlot" />
-                </div>
-            </Transition>
-        </div>
-    </dialog>
-</template>
+.modal-container {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-sm { width: 100%; max-width: 400px; }
+.modal-md { width: 100%; max-width: 600px; }
+.modal-lg { width: 100%; max-width: 900px; }
+.modal-xl { width: 100%; max-width: 1200px; }
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.modal-close {
+    background: #f3f4f6;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #6b7280;
+}
+
+.modal-close:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.modal-enter-active,
+.modal-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.modal-enter-active .modal-container,
+.modal-leave-active .modal-container {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+    opacity: 0;
+}
+
+.modal-enter-from .modal-container,
+.modal-leave-to .modal-container {
+    transform: scale(0.95);
+    opacity: 0;
+}
+</style>
