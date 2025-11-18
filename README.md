@@ -1,189 +1,491 @@
-# ComptaPro SaaS
+# 💼 ComptaPro SaaS - Modern Accounting Application
 
-**Application de Comptabilité & Facturation Multi-Pays**
+![ComptaPro](https://img.shields.io/badge/ComptaPro-v1.0.0-blue)
+![Laravel](https://img.shields.io/badge/Laravel-11-red)
+![Vue.js](https://img.shields.io/badge/Vue.js-3-green)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-[![Laravel](https://img.shields.io/badge/Laravel-11+-FF2D20?style=flat&logo=laravel)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat&logo=php)](https://php.net)
-[![Vue.js](https://img.shields.io/badge/Vue.js-3-4FC08D?style=flat&logo=vue.js)](https://vuejs.org)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=flat&logo=bootstrap)](https://getbootstrap.com)
+**ComptaPro** est une application SaaS de comptabilité moderne et complète, construite avec Laravel 11 et Vue.js 3. Elle offre une gestion complète de la comptabilité multi-pays avec un design élégant et des fonctionnalités avancées inspirées de Pennylane.
 
-## 🌍 À propos
+---
 
-ComptaPro SaaS est une solution de comptabilité et facturation en ligne conçue pour les PME/TPE opérant en Belgique, France, Suisse et Tunisie. L'application combine la simplicité d'utilisation, la puissance des fonctionnalités et l'adaptation automatique aux réglementations fiscales de chaque pays.
+## ✨ Fonctionnalités Principales
 
-### 🎯 Caractéristiques principales
+### 📊 **Comptabilité Complète**
+- ✅ **Multi-pays** : France, Belgique, Luxembourg, Suisse, Canada
+- ✅ **Plan comptable** : PCG, PCMN, PCN-Lux, PCN-CH, Québec
+- ✅ **Multi-devise** : EUR, CHF, CAD
+- ✅ **Journaux comptables** : Ventes, Achats, Banque, OD
+- ✅ **Écritures comptables** : Saisie et validation
+- ✅ **Grand livre** : Consultation par compte
+- ✅ **Balance** : Génération automatique
 
-- ✅ **Multi-pays natif** : Adaptation automatique aux règles fiscales (BE, FR, CH, TN)
-- ✅ **UX guidée** : Utilisable sans diplôme comptable
-- ✅ **Prêt pour l'e-invoicing** : Peppol, Chorus Pro, TTN/El Fatoora
-- ✅ **Automatisation intelligente** : Rapprochement bancaire, suggestions TVA, alertes
-- ✅ **Multi-sociétés** : Gérez plusieurs entreprises dans un seul compte
-- ✅ **Multi-utilisateurs** : Rôles granulaires et permissions avancées
+### 💰 **Facturation & Ventes**
+- ✅ **Clients** : Gestion complète avec auto-numérotation
+- ✅ **Factures & Devis** : Création, envoi, suivi
+- ✅ **Avoirs** : Génération automatique
+- ✅ **Produits & Services** : Catalogue avec TVA
+- ✅ **PDF professionnel** : Génération automatique
+- ✅ **Envoi email** : Avec pièce jointe PDF
+- ✅ **Liens de paiement** : Stripe/PayPal ready
+- ✅ **Rappels automatiques** : 3 niveaux (J+7, J+15, J+30)
 
-## 📦 Modules
+### 🛒 **Achats**
+- ✅ **Fournisseurs** : Gestion complète
+- ✅ **Factures d'achat** : Avec workflow (Reçu → Approuvé → Payé)
+- ✅ **OCR ready** : Prêt pour Tesseract/Google Vision/AWS Textract
+- ✅ **Paiements** : Suivi et enregistrement
 
-| Module | Description |
-|--------|-------------|
-| **Core** | Gestion sociétés, utilisateurs, paramètres globaux |
-| **Accounting** | Plan comptable, journaux, écritures, clôtures |
-| **Invoicing** | Devis, factures, avoirs, relances, paiements |
-| **Tax** | TVA, déclarations fiscales, exports XML |
-| **Banking** | Comptes bancaires, imports relevés, rapprochement |
-| **Purchases** | Fournisseurs, commandes, factures achats |
-| **Products** | Produits/services, stock, catégories |
-| **Reporting** | Dashboards, rapports financiers, analytics |
+### 📈 **Rapports**
+- ✅ **Compte de résultat** : Revenus vs Dépenses
+- ✅ **Bilan** : Actif/Passif avec vérification équilibre
+- ✅ **TVA** : Rapport avec taux détaillés
+- ✅ **Balance détaillée** : Comparaison N vs N-1
+- ✅ **Flux de trésorerie** : Suivi en temps réel
+- ✅ **Export PDF** : Tous les rapports
 
-## 🚀 Installation
+### 🎨 **Design Moderne**
+- ✅ **Sidebar animée** : Collapsible avec animations fluides
+- ✅ **Dashboard visuel** : Stats, charts, graphiques
+- ✅ **Dark mode** : Support complet
+- ✅ **Responsive** : Mobile, Tablet, Desktop
+- ✅ **50+ animations CSS** : Transitions professionnelles
+- ✅ **Composants UI** : Modal, Alert, Card, Loading
+- ✅ **Notifications** : Système de toast intégré
 
-### Prérequis
+### 🏢 **Multi-tenant**
+- ✅ **Sociétés multiples** : Un utilisateur, plusieurs sociétés
+- ✅ **Isolation des données** : Par société
+- ✅ **Plans d'abonnement** : Basic, Pro, Enterprise
+- ✅ **Switch facile** : Entre sociétés
 
-- PHP 8.2 ou supérieur
-- Composer 2+
+---
+
+## 🚀 Technologies Utilisées
+
+### **Backend**
+- **Laravel 11** : Framework PHP moderne
+- **MySQL/PostgreSQL** : Base de données
+- **Inertia.js** : SPA sans API
+- **DomPDF** : Génération de PDF
+- **Laravel Mail** : Envoi d'emails
+
+### **Frontend**
+- **Vue.js 3** : Composition API
+- **Bootstrap 5** : Framework CSS
+- **Vite** : Build tool rapide
+- **Bootstrap Icons** : Icônes modernes
+
+### **Features**
+- **Authentication** : Laravel Breeze
+- **Multi-tenant** : Par société
+- **PDF Generation** : Factures, Rapports
+- **Email System** : Mailables avec templates
+- **Payment Links** : Secure tokens
+- **Auto Reminders** : Artisan command
+
+---
+
+## 📦 Installation
+
+### **Prérequis**
+- PHP 8.2+
+- Composer
 - Node.js 18+
-- PostgreSQL 14+ ou MySQL 8.0+
-- Redis 6+
+- MySQL 8.0+ ou PostgreSQL 14+
 
-### Installation locale
+### **Installation Rapide**
 
 ```bash
-# Cloner le repository
-git clone https://github.com/haythemsaa/comptapro-.git
-cd comptapro-
+# 1. Cloner le repository
+git clone https://github.com/votre-username/comptapro.git
+cd comptapro
 
-# Installer les dépendances PHP
+# 2. Installer les dépendances
 composer install
-
-# Installer les dépendances JavaScript
 npm install
 
-# Configuration de l'environnement
+# 3. Configuration
 cp .env.example .env
 php artisan key:generate
 
-# Configurer la base de données dans .env
-# Puis exécuter les migrations
+# 4. Base de données
+# Configurer .env avec vos credentials
 php artisan migrate --seed
 
-# Compiler les assets
-npm run dev
+# 5. Build assets
+npm run build
 
-# Démarrer le serveur de développement
+# 6. Lancer le serveur
 php artisan serve
 ```
 
-L'application sera accessible sur `http://localhost:8000`
+Accédez à : `http://localhost:8000`
 
-## 🌐 Pays supportés
+---
 
-| Pays | Devise | TVA | Plan Comptable | E-invoicing |
-|------|--------|-----|----------------|-------------|
-| 🇧🇪 **Belgique** | EUR | 21% (+ 12%, 6%, 0%) | PCN | Peppol B2B 2026 |
-| 🇫🇷 **France** | EUR | 20% (+ 10%, 5.5%, 2.1%) | PCG 2025 | Chorus Pro |
-| 🇨🇭 **Suisse** | CHF | 8.1% (+ 2.6%, 3.8%) | Plan KMU | Non obligatoire |
-| 🇹🇳 **Tunisie** | TND | 19% (+ 13%, 7%, 0%) | Plan tunisien | TTN / El Fatoora |
+## 🔧 Configuration
 
-## 👥 Profils utilisateurs
+### **Variables d'environnement (.env)**
 
-1. **Super Admin SaaS** - Gestion complète de la plateforme
-2. **Admin Société** - Gestion complète d'une société
-3. **Responsable Commercial** - Clients, devis, factures
-4. **Gestionnaire Achats** - Fournisseurs, commandes, factures achats
-5. **Comptable / Teneur de Livres** - Écritures, TVA, rapprochement
-6. **Expert-Comptable Externe** - Lecture + ajustements de clôture
+```env
+# Application
+APP_NAME="ComptaPro SaaS"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://votre-domaine.com
 
-## 💰 Tarification
+# Base de données
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=comptapro
+DB_USERNAME=root
+DB_PASSWORD=
 
-| Plan | Prix | Sociétés | Utilisateurs | Factures/an |
-|------|------|----------|--------------|-------------|
-| **Starter** | 29 €/mois | 1 | 2 | 500 |
-| **Professional** | 79 €/mois | 3 | 5 | Illimité |
-| **Enterprise** | Sur devis | Illimité | Illimité | Illimité |
+# Mail (pour envoi factures)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your-username
+MAIL_PASSWORD=your-password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@comptapro.com
+MAIL_FROM_NAME="${APP_NAME}"
 
-## 🔒 Sécurité
+# Paiements (optionnel)
+STRIPE_KEY=pk_test_xxxxx
+STRIPE_SECRET=sk_test_xxxxx
+PAYPAL_CLIENT_ID=xxxxx
+PAYPAL_SECRET=xxxxx
+```
 
-- Authentification Laravel Sanctum avec 2FA optionnel
-- Système de permissions granulaire (Spatie)
-- Protection CSRF/XSS native Laravel
-- Chiffrement des données sensibles
-- Audit trail complet
-- Conformité RGPD
+### **Tâches Cron**
 
-## 📚 Documentation
+Ajouter dans crontab pour les rappels automatiques :
 
-- [Architecture](docs/ARCHITECTURE.md)
-- [Cahier des charges](Cahier_Specifications_ComptaPro_SaaS.docx)
-- API Documentation (à venir)
-- Guide utilisateur (à venir)
+```bash
+* * * * * cd /path/to/comptapro && php artisan schedule:run >> /dev/null 2>&1
+```
 
-## 🛣️ Roadmap
+Dans `app/Console/Kernel.php` :
 
-### ✅ Phase 1 : MVP (En cours)
-- Authentification & gestion utilisateurs
-- Paramétrage multi-pays (BE, FR)
-- Plan comptable pré-configuré
-- Clients, fournisseurs, produits
-- Facturation complète (devis, factures, avoirs)
-- Écritures comptables
-- Synthèse TVA simple
-- Dashboard basique
-- Rapports : Grand livre, Balance
+```php
+protected function schedule(Schedule $schedule)
+{
+    $schedule->command('invoices:send-reminders')->daily();
+}
+```
 
-### 🔄 Phase 2 : Consolidation (T1 2026)
-- Extension Suisse & Tunisie
-- Import relevés bancaires
-- Rapprochement bancaire semi-automatique
-- Factures fournisseurs complètes
-- Déclarations TVA avec export XML
-- Clôtures périodiques
-- Gestion stock simple
-- Rapports avancés : P&L, Bilan
-- Export FEC (France)
-- Portail expert-comptable
-- API REST publique
+---
 
-### 🚀 Phase 3 : E-Invoicing & IA (T2-T3 2026)
-- E-invoicing par pays (Peppol, Chorus Pro, TTN)
-- OCR factures fournisseurs
-- Suggestions IA pour comptes comptables
-- Prédiction dates de paiement
-- Détection anomalies comptables
-- Intégrations Stripe, GoCardless
-- Open Banking PSD2
-- Zapier / Make.com
+## 📚 Structure du Projet
+
+```
+comptapro/
+├── app/
+│   ├── Console/Commands/
+│   │   └── SendInvoiceReminders.php
+│   ├── Http/Controllers/
+│   │   ├── CustomerController.php
+│   │   ├── InvoiceController.php
+│   │   ├── ProductController.php
+│   │   ├── SupplierController.php
+│   │   ├── PurchaseController.php
+│   │   ├── PaymentController.php
+│   │   ├── ReportController.php
+│   │   └── ...
+│   ├── Mail/
+│   │   ├── InvoiceMail.php
+│   │   └── InvoiceReminderMail.php
+│   ├── Models/
+│   │   ├── Company.php
+│   │   ├── Customer.php
+│   │   ├── Invoice.php
+│   │   ├── Product.php
+│   │   ├── Supplier.php
+│   │   ├── PurchaseInvoice.php
+│   │   ├── Account.php
+│   │   └── ...
+│   └── Services/
+│       └── PdfGenerator.php
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── resources/
+│   ├── css/
+│   │   ├── app.css
+│   │   └── animations.css
+│   ├── js/
+│   │   ├── Components/
+│   │   │   ├── Modal.vue
+│   │   │   ├── Alert.vue
+│   │   │   ├── Card.vue
+│   │   │   └── Loading.vue
+│   │   ├── Layouts/
+│   │   │   └── AuthenticatedLayout.vue
+│   │   └── Pages/
+│   │       ├── Dashboard.vue
+│   │       ├── Customers/
+│   │       ├── Invoices/
+│   │       ├── Products/
+│   │       ├── Suppliers/
+│   │       ├── Purchases/
+│   │       └── ...
+│   └── views/
+│       ├── emails/
+│       │   ├── invoice.blade.php
+│       │   └── invoice-reminder.blade.php
+│       └── pdf/
+│           ├── invoice.blade.php
+│           └── reports/
+│               ├── profit-loss.blade.php
+│               ├── balance-sheet.blade.php
+│               └── vat-report.blade.php
+├── routes/
+│   └── web.php
+├── DESIGN_GUIDE.md
+├── QUICK_START.md
+└── README.md
+```
+
+---
+
+## 🎨 Design System
+
+ComptaPro utilise un système de design moderne et cohérent :
+
+### **Couleurs**
+- **Primary** : #3b82f6 (Bleu)
+- **Success** : #10b981 (Vert)
+- **Warning** : #f59e0b (Orange)
+- **Danger** : #ef4444 (Rouge)
+
+### **Composants UI**
+- **Modal** : 4 tailles (sm, md, lg, xl)
+- **Alert** : 4 variants (success, info, warning, danger)
+- **Card** : 4 variants (default, gradient, bordered, elevated)
+- **Loading** : 4 types (spinner, dots, pulse, bars)
+
+### **Animations**
+- 50+ animations CSS
+- Transitions fluides
+- Hover effects
+- Stagger animations
+
+Voir [DESIGN_GUIDE.md](./DESIGN_GUIDE.md) pour plus de détails.
+
+---
+
+## 📖 Documentation
+
+- **[QUICK_START.md](./QUICK_START.md)** : Guide de démarrage rapide
+- **[DESIGN_GUIDE.md](./DESIGN_GUIDE.md)** : Système de design complet
+- **[PENNYLANE_FEATURES.md](./PENNYLANE_FEATURES.md)** : Features inspirées de Pennylane
+
+---
+
+## 🔐 Sécurité
+
+### **Authentification**
+- Laravel Breeze (session-based)
+- CSRF protection
+- Password hashing (bcrypt)
+
+### **Paiements**
+- Tokens sécurisés (64 chars, random_bytes)
+- Expiration (30 jours)
+- Validation stricte
+
+### **Multi-tenant**
+- Isolation par société (company_id)
+- Middleware de vérification
+- Pas de data leakage
+
+---
 
 ## 🧪 Tests
 
 ```bash
 # Tests unitaires
-php artisan test --testsuite=Unit
+php artisan test
 
-# Tests fonctionnels
-php artisan test --testsuite=Feature
+# Tests feature
+php artisan test --filter=InvoiceTest
 
-# Tests avec couverture
+# Coverage
 php artisan test --coverage
-
-# Analyse statique
-./vendor/bin/phpstan analyse
 ```
-
-## 🤝 Contribution
-
-Les contributions sont les bienvenues ! Consultez [CONTRIBUTING.md](CONTRIBUTING.md) pour plus d'informations.
-
-## 📄 Licence
-
-Propriétaire - Tous droits réservés © 2025 ComptaPro SaaS
-
-## 📧 Support
-
-Pour toute question ou support :
-- Email : support@comptapro.com
-- Documentation : https://docs.comptapro.com
 
 ---
 
-**Développé avec ❤️ pour les entrepreneurs et PME**
+## 📊 Base de Données
 
-**Version**: 1.0.0 (MVP en développement)
-**Dernière mise à jour**: 18 novembre 2025
+### **Tables Principales**
+
+- **companies** : Sociétés
+- **users** : Utilisateurs
+- **customers** : Clients (CUS-00001)
+- **invoices** : Factures (INV-00001, QUO-00001, CRN-00001)
+- **invoice_lines** : Lignes de factures
+- **products** : Produits & Services (PRD-00001)
+- **suppliers** : Fournisseurs (SUP-00001)
+- **purchase_invoices** : Factures d'achat (PUR-00001)
+- **accounts** : Plan comptable
+- **journal_entries** : Écritures comptables
+- **invoice_reminders** : Rappels automatiques
+
+**Total** : 21 tables
+
+---
+
+## 🚀 Déploiement
+
+### **Production Checklist**
+
+- [ ] Configurer `.env` pour production
+- [ ] `APP_DEBUG=false`
+- [ ] Configurer base de données production
+- [ ] Configurer SMTP pour emails
+- [ ] Générer `APP_KEY`
+- [ ] Optimiser : `php artisan optimize`
+- [ ] Cache config : `php artisan config:cache`
+- [ ] Cache routes : `php artisan route:cache`
+- [ ] Build assets : `npm run build`
+- [ ] Configurer SSL/HTTPS
+- [ ] Configurer cron pour rappels
+- [ ] Backups automatiques DB
+- [ ] Monitoring (Sentry, Bugsnag)
+
+### **Performance**
+
+```bash
+# Optimisation Laravel
+php artisan optimize
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Build production
+npm run build
+```
+
+---
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues !
+
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/AmazingFeature`)
+3. Commit (`git commit -m 'Add AmazingFeature'`)
+4. Push (`git push origin feature/AmazingFeature`)
+5. Ouvrir une Pull Request
+
+---
+
+## 📝 License
+
+Ce projet est sous licence MIT. Voir `LICENSE` pour plus d'informations.
+
+---
+
+## 👥 Auteurs
+
+- **Votre Nom** - *Développement initial* - [@votre-github](https://github.com/votre-username)
+
+---
+
+## 🙏 Remerciements
+
+- Laravel Framework
+- Vue.js Team
+- Bootstrap Team
+- Pennylane (inspiration)
+- Tous les contributeurs
+
+---
+
+## 📧 Contact
+
+- **Email** : contact@comptapro.com
+- **Website** : https://comptapro.com
+- **Support** : support@comptapro.com
+
+---
+
+## 🗺️ Roadmap
+
+### **Version 1.1** (Q2 2025)
+- [ ] Import bancaire (OFX, CSV)
+- [ ] Rapprochement bancaire
+- [ ] Multi-utilisateurs par société
+- [ ] Rôles et permissions
+- [ ] API REST complète
+- [ ] Mobile app (iOS/Android)
+
+### **Version 1.2** (Q3 2025)
+- [ ] Inventaire avancé
+- [ ] Gestion des stocks
+- [ ] Bons de commande
+- [ ] Bons de livraison
+- [ ] Devis estimatifs
+- [ ] Contrats récurrents
+
+### **Version 2.0** (Q4 2025)
+- [ ] IA pour catégorisation automatique
+- [ ] OCR avancé pour factures
+- [ ] Prévisions de trésorerie
+- [ ] Dashboard personnalisable
+- [ ] Widgets drag & drop
+- [ ] Intégrations tierces (Stripe, PayPal, etc.)
+
+---
+
+## 📊 Statistiques
+
+- **21 tables** de base de données
+- **15+ vues Vue.js** complètes
+- **50+ animations** CSS
+- **4 composants** UI réutilisables
+- **3 templates email** professionnels
+- **4 templates PDF** (factures + rapports)
+- **5 pays** supportés
+- **3 devises** supportées
+- **100% responsive**
+- **Dark mode** complet
+
+---
+
+## 🎯 Features Clés
+
+### **✅ Inspiré de Pennylane**
+- Module Achats complet avec OCR
+- Liens de paiement en ligne
+- Rappels automatiques (3 niveaux)
+- Balance détaillée N vs N-1
+
+### **✅ Design Moderne**
+- Sidebar collapsible animée
+- Dashboard avec charts visuels
+- 50+ animations fluides
+- Dark mode support
+
+### **✅ Productivité**
+- Auto-numérotation (CUS-00001, INV-00001, etc.)
+- Templates email professionnels
+- PDF automatiques
+- Rappels automatisés
+
+### **✅ Multi-pays**
+- Plans comptables : PCG, PCMN, PCN-Lux, PCN-CH, Québec
+- Devises : EUR, CHF, CAD
+- TVA par pays
+- Formats de numérotation locaux
+
+---
+
+**ComptaPro SaaS - La comptabilité moderne et élégante** 💼✨
+
+Made with ❤️ by the ComptaPro Team
