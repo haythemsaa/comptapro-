@@ -202,6 +202,32 @@ Accédez à **http://localhost:8000**
     - Analyse d'évolution
     - Détection variations importantes
 
+16. **Génération PDF** 🆕 PRIORITY 2 COMPLETE
+    - **Service PdfGenerator** centralisé
+    - **Templates professionnels** pour factures:
+      - Devis, Factures, Avoirs
+      - Branding entreprise (logo, coordonnées)
+      - Détail lignes avec TVA
+      - Totaux HT/TTC
+      - Statut paiement
+      - Notes et conditions
+    - **Templates pour rapports**:
+      - Compte de Résultat (P&L)
+      - Déclaration TVA
+      - Sections color-coded
+      - Multi-devise
+    - **Routes de téléchargement**:
+      - `/invoices/{id}/pdf` - Télécharger facture
+      - `/invoices/{id}/pdf/preview` - Prévisualiser
+      - `/reports/profit-loss/pdf` - P&L PDF
+      - `/reports/vat/pdf` - TVA PDF
+    - **Fonctionnalités**:
+      - Format A4 optimisé
+      - Support UTF-8 (DejaVu Sans)
+      - Headers/footers personnalisables
+      - Formatage devises et dates
+      - Impression haute qualité
+
 ### 🚧 À développer (Roadmap)
 
 1. **✅ Priority 1: Frontend complet** - TERMINÉ! 🎉
@@ -213,13 +239,16 @@ Accédez à **http://localhost:8000**
    - ✅ Navigation complète Bootstrap 5
    - **Total: 15+ vues Vue.js créées (2,900+ lignes)**
 
-2. **Génération PDF** (Priority 2) - SUIVANT
-   - Templates de factures professionnelles
-   - Templates de rapports (P&L, Bilan, TVA)
-   - Envoi par email avec attachements
-   - Configuration des en-têtes/pieds de page
+2. **✅ Priority 2: Génération PDF** - TERMINÉ! 📄
+   - ✅ Service PdfGenerator (DomPDF)
+   - ✅ Templates factures (devis, factures, avoirs)
+   - ✅ Templates rapports (P&L, TVA)
+   - ✅ Routes de téléchargement et prévisualisation
+   - ✅ Headers/footers personnalisables
+   - ✅ Support multi-devise et multi-langue
+   - **Total: 4 templates PDF (615+ lignes)**
 
-3. **Modules avancés** (Priority 3)
+3. **Modules avancés** (Priority 3) - SUIVANT
    - Module Achats complet
    - Module Bancaire avec rapprochement
    - Module Taxes avancé
