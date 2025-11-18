@@ -132,21 +132,75 @@ Accédez à **http://localhost:8000**
    - Profile management
 
 10. **Base de données complète**
-    - 15 tables migrées
+    - **21 tables migrées** (15 initiales + 6 nouvelles)
     - Relations optimisées
     - Multi-tenant ready
     - Soft deletes
+    - Nouvelles tables:
+      - suppliers (fournisseurs)
+      - purchase_invoices (factures d'achat)
+      - purchase_invoice_lines (lignes factures achat)
+      - invoice_reminders (relances)
+      - + champs paiement en ligne sur invoices
 
 11. **Interface utilisateur** ✨ NOUVEAU
     - **Navigation Bootstrap 5** avec menu complet
-    - **8 vues Vue.js** créées (1,800+ lignes)
+    - **15+ vues Vue.js** créées (3,800+ lignes)
     - Factures: Index, Create, Edit, Show ✅
     - Produits: Index, Create, Edit ✅
+    - Fournisseurs: Index ✅
+    - Achats: Index ✅
     - Rapports: Index avec tous les liens ✅
     - Design responsive et moderne
     - Icônes Bootstrap Icons
     - Filtres et recherche en temps réel
     - Modales pour actions rapides
+
+12. **Module Achats** 🆕 PENNYLANE-INSPIRED
+    - Gestion complète des fournisseurs
+    - Numérotation automatique (SUP-00001)
+    - Factures d'achat avec workflow (draft → received → approved → paid)
+    - Numérotation: PUR-00001, PCN-00001
+    - **Upload factures avec OCR ready** (PDF/JPG/PNG)
+    - Paiements partiels
+    - Approbation avec audit trail
+    - Référence fournisseur
+    - Catégories (Biens/Services)
+    - Coordonnées bancaires (IBAN/BIC)
+    - Délais de paiement personnalisables
+
+13. **Paiement en ligne** 🆕 PENNYLANE-INSPIRED
+    - **Génération liens de paiement sécurisés**
+    - Token unique 64 caractères
+    - Expiration automatique (30 jours)
+    - Page publique de paiement
+    - Support Stripe/PayPal (ready)
+    - Virement bancaire avec instructions
+    - Paiements partiels
+    - Tracking des paiements
+
+14. **Relances automatiques** 🆕 PENNYLANE-INSPIRED
+    - **Commande Artisan** : `php artisan invoices:send-reminders`
+    - Workflow intelligent:
+      - J+7 : 1ère relance (rappel poli)
+      - J+15 : 2ème relance (demande ferme)
+      - J+30 : Mise en demeure (avertissement juridique)
+    - Détection automatique des retards
+    - Évite les doublons
+    - Tracking complet (envois, ouvertures)
+    - Templates personnalisés par type
+    - Ready pour cron job quotidien
+
+15. **Balance détaillée N vs N-1** 🆕 PENNYLANE-INSPIRED
+    - Comparaison année en cours vs année précédente
+    - Balance par compte avec:
+      - Solde année N
+      - Solde année N-1
+      - Écart absolu
+      - Écart en pourcentage
+    - Groupement par type de compte
+    - Analyse d'évolution
+    - Détection variations importantes
 
 ### 🚧 À développer (Roadmap)
 
