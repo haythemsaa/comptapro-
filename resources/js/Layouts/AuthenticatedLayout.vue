@@ -39,6 +39,23 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" :class="{ active: route().current('suppliers.*') || route().current('purchases.*') }" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-cart me-1"></i>Achats
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <Link class="dropdown-item" :href="route('suppliers.index')">
+                                        <i class="bi bi-building me-2"></i>Fournisseurs
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link class="dropdown-item" :href="route('purchases.index')">
+                                        <i class="bi bi-file-earmark-text me-2"></i>Factures d'achat
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" :class="{ active: route().current('accounting.*') }" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-journal-text me-1"></i>Comptabilité
                             </a>

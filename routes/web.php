@@ -5,6 +5,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\ReportController;
@@ -55,6 +57,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('products', ProductController::class);
     Route::post('/products/{product}/toggle-active', [ProductController::class, 'toggleActive'])
         ->name('products.toggle-active');
+
+    // Suppliers
+    Route::resource('suppliers', SupplierController::class);
+
+    // Purchases (factures d'achat)
+    Route::resource('purchases', PurchaseController::class);
+    Route::post('/purchases/{purchase}/mark-received', [PurchaseController::class, 'markReceived'])
+        ->name('purchases.mark-received');
+    Route::post('/purchases/{purchase}/approve', [PurchaseController::class, 'approve'])
+        ->name('purchases.approve');
+    Route::post('/purchases/{purchase}/mark-paid', [PurchaseController::class, 'markPaid'])
+        ->name('purchases.mark-paid');
+    Route::post('/purchases/upload-ocr', [PurchaseController::class, 'uploadWithOcr'])
+        ->name('purchases.upload-ocr');
 
     // Companies
     Route::resource('companies', CompanyController::class);
