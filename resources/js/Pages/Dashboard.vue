@@ -3,6 +3,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import Onboarding from '@/Components/Onboarding.vue';
+import LineChart from '@/Components/Charts/LineChart.vue';
+import BarChart from '@/Components/Charts/BarChart.vue';
+import DoughnutChart from '@/Components/Charts/DoughnutChart.vue';
+import { useChartExport } from '@/Composables/useChartExport';
 
 const props = defineProps({
     companies: Array,
@@ -49,6 +53,88 @@ const quickActions = [
 const handleOnboardingComplete = () => {
     console.log('Onboarding completed!');
 };
+
+// Chart Export
+const { exportChartAsPNG, downloadPDFReport } = useChartExport();
+const revenueChartRef = ref(null);
+const doughnutChartRef = ref(null);
+const barChartRef = ref(null);
+
+const exportRevenueChart = () => {
+    if (revenueChartRef.value) {
+        const canvas = revenueChartRef.value.getCanvas();
+        exportChartAsPNG(canvas, 'evolution-chiffre-affaires.png');
+    }
+};
+
+const exportInvoiceTypeChart = () => {
+    if (doughnutChartRef.value) {
+        const canvas = doughnutChartRef.value.getCanvas();
+        exportChartAsPNG(canvas, 'repartition-factures.png');
+    }
+};
+
+const exportComparisonChart = () => {
+    if (barChartRef.value) {
+        const canvas = barChartRef.value.getCanvas();
+        exportChartAsPNG(canvas, 'comparaison-mensuelle.png');
+    }
+};
+
+// Chart Data
+const revenueChartData = computed(() => ({
+    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+    datasets: [{
+        label: 'Chiffre d\'affaires',
+        data: [12000, 19000, 15000, 25000, 22000, 30000, 28000, 32000, 27000, 35000, 38000, 42000],
+        borderColor: 'rgb(59, 130, 246)',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        fill: true,
+        tension: 0.4
+    }]
+}));
+
+const invoiceTypeChartData = computed(() => ({
+    labels: ['Factures', 'Devis', 'Avoirs'],
+    datasets: [{
+        data: [
+            props.stats?.paid_invoices || 0,
+            props.stats?.draft_invoices || 0,
+            props.stats?.sent_invoices || 0
+        ],
+        backgroundColor: [
+            'rgba(59, 130, 246, 0.8)',
+            'rgba(139, 92, 246, 0.8)',
+            'rgba(245, 158, 11, 0.8)'
+        ],
+        borderColor: [
+            'rgb(59, 130, 246)',
+            'rgb(139, 92, 246)',
+            'rgb(245, 158, 11)'
+        ],
+        borderWidth: 2
+    }]
+}));
+
+const monthlyComparisonData = computed(() => ({
+    labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin'],
+    datasets: [
+        {
+            label: '2024',
+            data: [12000, 19000, 15000, 25000, 22000, 30000],
+            backgroundColor: 'rgba(59, 130, 246, 0.8)',
+            borderColor: 'rgb(59, 130, 246)',
+            borderWidth: 1
+        },
+        {
+            label: '2023',
+            data: [10000, 15000, 12000, 20000, 18000, 24000],
+            backgroundColor: 'rgba(139, 92, 246, 0.8)',
+            borderColor: 'rgb(139, 92, 246)',
+            borderWidth: 1
+        }
+    ]
+}));
 </script>
 
 <template>
@@ -306,6 +392,89 @@ const handleOnboardingComplete = () => {
                                                  :style="{ width: (stats.overdue_invoices / stats.total_invoices * 100) + '%' }"></div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Charts Section -->
+            <div v-if="stats" class="interactive-charts-section">
+                <div class="section-header mb-4">
+                    <h5 class="section-title">
+                        <i class="bi bi-graph-up me-2"></i>
+                        Graphiques interactifs
+                    </h5>
+                    <p class="section-subtitle">Visualisez vos données en temps réel</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Revenue Evolution Chart -->
+                    <div class="col-lg-8">
+                        <div class="interactive-chart-card">
+                            <div class="chart-card-header">
+                                <div>
+                                    <h6 class="chart-card-title">Évolution du chiffre d'affaires</h6>
+                                    <p class="chart-card-subtitle">Tendance sur 12 mois</p>
+                                </div>
+                                <div class="chart-card-actions">
+                                    <button class="btn-chart-action" @click="exportRevenueChart" title="Télécharger en PNG">
+                                        <i class="bi bi-download"></i>
+                                    </button>
+                                    <button class="btn-chart-action">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-card-body">
+                                <div class="chart-wrapper" style="height: 300px;">
+                                    <LineChart ref="revenueChartRef" :data="revenueChartData" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Invoice Type Distribution -->
+                    <div class="col-lg-4">
+                        <div class="interactive-chart-card">
+                            <div class="chart-card-header">
+                                <div>
+                                    <h6 class="chart-card-title">Répartition des factures</h6>
+                                    <p class="chart-card-subtitle">Par type</p>
+                                </div>
+                            </div>
+                            <div class="chart-card-body">
+                                <div class="chart-wrapper" style="height: 300px;">
+                                    <DoughnutChart ref="doughnutChartRef" :data="invoiceTypeChartData" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly Comparison Chart -->
+                    <div class="col-12">
+                        <div class="interactive-chart-card">
+                            <div class="chart-card-header">
+                                <div>
+                                    <h6 class="chart-card-title">Comparaison mensuelle</h6>
+                                    <p class="chart-card-subtitle">2024 vs 2023</p>
+                                </div>
+                                <div class="chart-card-actions">
+                                    <button class="btn-chart-action" @click="exportComparisonChart" title="Télécharger en PNG">
+                                        <i class="bi bi-download"></i>
+                                    </button>
+                                    <button class="btn-chart-action active">
+                                        <i class="bi bi-bar-chart-fill"></i>
+                                    </button>
+                                    <button class="btn-chart-action">
+                                        <i class="bi bi-graph-up"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-card-body">
+                                <div class="chart-wrapper" style="height: 350px;">
+                                    <BarChart ref="barChartRef" :data="monthlyComparisonData" />
                                 </div>
                             </div>
                         </div>
@@ -1138,6 +1307,108 @@ const handleOnboardingComplete = () => {
     .stats-grid {
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
+}
+
+/* Interactive Charts Section */
+.interactive-charts-section {
+    margin: 40px 0;
+}
+
+.section-header {
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    color: #3b82f6;
+}
+
+.section-subtitle {
+    color: #6b7280;
+    margin: 8px 0 0 0;
+    font-size: 14px;
+}
+
+.interactive-chart-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.interactive-chart-card:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+}
+
+.chart-card-header {
+    padding: 24px;
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chart-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 4px 0;
+}
+
+.chart-card-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.chart-card-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-chart-action {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #6b7280;
+}
+
+.btn-chart-action:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    color: #1f2937;
+}
+
+.btn-chart-action.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #fff;
+}
+
+.chart-card-body {
+    padding: 24px;
+}
+
+.chart-wrapper {
+    position: relative;
+    width: 100%;
 }
 
 @media (max-width: 575px) {
