@@ -1,198 +1,138 @@
-<script setup>
-import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
-
-const showingNavigationDropdown = ref(false);
-</script>
-
 <template>
-    <div>
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav
-                class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800"
-            >
-                <!-- Primary Navigation Menu -->
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex h-16 justify-between">
-                        <div class="flex">
-                            <!-- Logo -->
-                            <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
-                                    />
-                                </Link>
-                            </div>
-
-                            <!-- Navigation Links -->
-                            <div
-                                class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
-                            >
-                                <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
-                                >
-                                    Dashboard
-                                </NavLink>
-                            </div>
-                        </div>
-
-                        <div class="hidden sm:ms-6 sm:flex sm:items-center">
-                            <!-- Settings Dropdown -->
-                            <div class="relative ms-3">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
-                                            >
-                                                {{ $page.props.auth.user.name }}
-
-                                                <svg
-                                                    class="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <DropdownLink
-                                            :href="route('profile.edit')"
-                                        >
-                                            Profile
-                                        </DropdownLink>
-                                        <DropdownLink
-                                            :href="route('logout')"
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
-
-                        <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
-                            <button
-                                @click="
-                                    showingNavigationDropdown =
-                                        !showingNavigationDropdown
-                                "
-                                class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-400 dark:focus:bg-gray-900 dark:focus:text-gray-400"
-                            >
-                                <svg
-                                    class="h-6 w-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex':
-                                                !showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex':
-                                                showingNavigationDropdown,
-                                        }"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+    <div class="min-vh-100 d-flex flex-column">
+        <!-- Top Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <Link class="navbar-brand" :href="route('dashboard')">
+                    <i class="bi bi-calculator me-2"></i>ComptaPro
+                </Link>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <Link class="nav-link" :class="{ active: route().current('dashboard') }" :href="route('dashboard')">
+                                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                            </Link>
+                        </li>
+                        <li class="nav-item">
+                            <Link class="nav-link" :class="{ active: route().current('customers.*') }" :href="route('customers.index')">
+                                <i class="bi bi-people me-1"></i>Clients
+                            </Link>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" :class="{ active: route().current('invoices.*') || route().current('products.*') }" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-receipt me-1"></i>Ventes
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <Link class="dropdown-item" :href="route('invoices.index')">
+                                        <i class="bi bi-file-text me-2"></i>Factures & Devis
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link class="dropdown-item" :href="route('products.index')">
+                                        <i class="bi bi-box me-2"></i>Produits & Services
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" :class="{ active: route().current('accounting.*') }" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-journal-text me-1"></i>Comptabilité
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <Link class="dropdown-item" :href="route('accounting.accounts')">
+                                        <i class="bi bi-list-ol me-2"></i>Plan comptable
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link class="dropdown-item" :href="route('accounting.journals')">
+                                        <i class="bi bi-book me-2"></i>Journaux
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link class="dropdown-item" :href="route('accounting.entries')">
+                                        <i class="bi bi-journal-plus me-2"></i>Écritures
+                                    </Link>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <Link class="dropdown-item" :href="route('accounting.general-ledger')">
+                                        <i class="bi bi-table me-2"></i>Grand livre
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link class="dropdown-item" :href="route('accounting.trial-balance')">
+                                        <i class="bi bi-calculator me-2"></i>Balance
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <Link class="nav-link" :class="{ active: route().current('reports.*') }" :href="route('reports.index')">
+                                <i class="bi bi-graph-up me-1"></i>Rapports
+                            </Link>
+                        </li>
+                        <li class="nav-item">
+                            <Link class="nav-link" :class="{ active: route().current('companies.*') }" :href="route('companies.index')">
+                                <i class="bi bi-building me-1"></i>Sociétés
+                            </Link>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-1"></i>{{ $page.props.auth.user.name }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <Link class="dropdown-item" :href="route('profile.edit')">
+                                        <i class="bi bi-gear me-2"></i>Profil
+                                    </Link>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <Link class="dropdown-item" :href="route('logout')" method="post" as="button">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Déconnexion
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
+            </div>
+        </nav>
 
-                <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{
-                        block: showingNavigationDropdown,
-                        hidden: !showingNavigationDropdown,
-                    }"
-                    class="sm:hidden"
-                >
-                    <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
+        <!-- Page Header -->
+        <header v-if="$slots.header" class="bg-white border-bottom py-3">
+            <div class="container-fluid">
+                <slot name="header" />
+            </div>
+        </header>
 
-                    <!-- Responsive Settings Options -->
-                    <div
-                        class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600"
-                    >
-                        <div class="px-4">
-                            <div
-                                class="text-base font-medium text-gray-800 dark:text-gray-200"
-                            >
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="text-sm font-medium text-gray-500">
-                                {{ $page.props.auth.user.email }}
-                            </div>
-                        </div>
+        <!-- Main Content -->
+        <main class="flex-fill bg-light">
+            <slot />
+        </main>
 
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
-                            </ResponsiveNavLink>
-                            <ResponsiveNavLink
-                                :href="route('logout')"
-                                method="post"
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- Page Heading -->
-            <header
-                class="bg-white shadow dark:bg-gray-800"
-                v-if="$slots.header"
-            >
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <slot name="header" />
-                </div>
-            </header>
-
-            <!-- Page Content -->
-            <main>
-                <slot />
-            </main>
-        </div>
+        <!-- Footer -->
+        <footer class="bg-dark text-white-50 py-3 mt-auto">
+            <div class="container-fluid text-center">
+                <small>&copy; 2025 ComptaPro SaaS - Solution comptable multi-pays</small>
+            </div>
+        </footer>
     </div>
 </template>
+
+<script setup>
+import { Link } from '@inertiajs/vue3';
+</script>
+
+<style scoped>
+.nav-link.active {
+    font-weight: 600;
+}
+</style>
