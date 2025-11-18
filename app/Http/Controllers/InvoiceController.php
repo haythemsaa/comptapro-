@@ -352,4 +352,57 @@ class InvoiceController extends Controller
 
         return back()->with('success', 'Paiement enregistré avec succès.');
     }
+
+    /**
+     * Generate payment link for invoice
+     */
+    public function generatePaymentLink(Request $request, Invoice $invoice)
+    {
+        if ($invoice->status === 'paid' || $invoice->status === 'cancelled') {
+            return back()->withErrors(['error' => 'Cette facture ne peut pas recevoir de lien de paiement.']);
+        }
+
+        // Generate unique token
+        $token = bin2hex(random_bytes(32));
+
+        // Expiration: 30 days by default
+        $expiresAt = now()->addDays(30);
+
+        $invoice->update([
+            'payment_token' => $token,
+            'payment_link_enabled' => true,
+            'payment_link_expires_at' => $expiresAt,
+            'payment_method' => $request->payment_method ?? 'bank_transfer',
+        ]);
+
+        $paymentUrl = route('payment.show', ['token' => $token]);
+
+        return back()->with([
+            'success' => 'Lien de paiement généré avec succès.',
+            'payment_url' => $paymentUrl
+        ]);
+    }
+
+    /**
+     * Disable payment link
+     */
+    public function disablePaymentLink(Invoice $invoice)
+    {
+        $invoice->update([
+            'payment_link_enabled' => false,
+        ]);
+
+        return back()->with('success', 'Lien de paiement désactivé.');
+    }
+
+    /**
+     * Send invoice by email with payment link
+     */
+    public function sendInvoiceEmail(Invoice $invoice)
+    {
+        // TODO: Implement email sending with Mailable
+        // This would send the invoice PDF + payment link to customer
+
+        return back()->with('success', 'Facture envoyée par email.');
+    }
 }

@@ -373,4 +373,86 @@ class ReportController extends Controller
             'netCashChange' => $netCashChange,
         ]);
     }
+
+    /**
+     * Detailed Balance with Year-over-Year Comparison
+     */
+    public function detailedBalance(Request $request): Response
+    {
+        $companyId = session('current_company_id');
+        $company = Company::with('country')->find($companyId);
+
+        $currentYear = $request->input('year', Carbon::now()->year);
+        $previousYear = $currentYear - 1;
+
+        // Get all accounts with their balances
+        $accounts = Account::where('company_id', $companyId)
+            ->where('is_active', true)
+            ->orderBy('code')
+            ->get();
+
+        $balanceData = [];
+
+        foreach ($accounts as $account) {
+            // Calculate current year balance
+            $currentYearBalance = $this->calculateAccountBalanceForYear($account, $currentYear);
+
+            // Calculate previous year balance
+            $previousYearBalance = $this->calculateAccountBalanceForYear($account, $previousYear);
+
+            // Calculate variance
+            $variance = $currentYearBalance - $previousYearBalance;
+            $variancePercent = $previousYearBalance != 0
+                ? (($variance / abs($previousYearBalance)) * 100)
+                : 0;
+
+            $balanceData[] = [
+                'account' => $account,
+                'current_year' => $currentYearBalance,
+                'previous_year' => $previousYearBalance,
+                'variance' => $variance,
+                'variance_percent' => $variancePercent,
+            ];
+        }
+
+        // Group by account type
+        $groupedData = collect($balanceData)->groupBy('account.type');
+
+        return Inertia::render('Reports/DetailedBalance', [
+            'company' => $company,
+            'currentYear' => $currentYear,
+            'previousYear' => $previousYear,
+            'balanceData' => $groupedData,
+        ]);
+    }
+
+    /**
+     * Helper: Calculate account balance for a specific year
+     */
+    private function calculateAccountBalanceForYear(Account $account, int $year): float
+    {
+        $startDate = Carbon::create($year, 1, 1)->startOfDay();
+        $endDate = Carbon::create($year, 12, 31)->endOfDay();
+
+        $debits = JournalEntryLine::where('account_id', $account->id)
+            ->where('type', 'debit')
+            ->whereHas('entry', function($q) use ($startDate, $endDate) {
+                $q->whereBetween('entry_date', [$startDate, $endDate]);
+            })
+            ->sum('amount');
+
+        $credits = JournalEntryLine::where('account_id', $account->id)
+            ->where('type', 'credit')
+            ->whereHas('entry', function($q) use ($startDate, $endDate) {
+                $q->whereBetween('entry_date', [$startDate, $endDate]);
+            })
+            ->sum('amount');
+
+        // Calculate balance based on account type
+        if (in_array($account->type, ['asset', 'expense'])) {
+            return $debits - $credits;
+        } else {
+            return $credits - $debits;
+        }
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AccountingController;
 use App\Http\Controllers\ReportController;
@@ -30,6 +31,11 @@ Route::get('/', function () {
     ]);
 });
 
+// Public payment routes (no authentication required)
+Route::get('/payment/{token}', [PaymentController::class, 'show'])->name('payment.show');
+Route::post('/payment/{token}/process', [PaymentController::class, 'process'])->name('payment.process');
+Route::get('/payment/{token}/success', [PaymentController::class, 'success'])->name('payment.success');
+
 // Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -52,6 +58,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('invoices.mark-sent');
     Route::post('/invoices/{invoice}/mark-paid', [InvoiceController::class, 'markAsPaid'])
         ->name('invoices.mark-paid');
+    Route::post('/invoices/{invoice}/generate-payment-link', [InvoiceController::class, 'generatePaymentLink'])
+        ->name('invoices.generate-payment-link');
+    Route::post('/invoices/{invoice}/disable-payment-link', [InvoiceController::class, 'disablePaymentLink'])
+        ->name('invoices.disable-payment-link');
+    Route::post('/invoices/{invoice}/send-email', [InvoiceController::class, 'sendInvoiceEmail'])
+        ->name('invoices.send-email');
 
     // Products
     Route::resource('products', ProductController::class);
@@ -133,6 +145,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('reports.sales-by-customer');
     Route::get('/reports/cash-flow', [ReportController::class, 'cashFlow'])
         ->name('reports.cash-flow');
+    Route::get('/reports/detailed-balance', [ReportController::class, 'detailedBalance'])
+        ->name('reports.detailed-balance');
 });
 
 require __DIR__.'/auth.php';
