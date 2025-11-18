@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Modules\Invoicing\Models\{Customer, Invoice, InvoiceLine};
 use App\Models\Modules\Products\Models\Product;
+use App\Services\PdfGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -404,5 +405,32 @@ class InvoiceController extends Controller
         // This would send the invoice PDF + payment link to customer
 
         return back()->with('success', 'Facture envoyée par email.');
+    }
+
+    /**
+     * Download invoice as PDF
+     */
+    public function downloadPdf(Invoice $invoice, PdfGenerator $pdfGenerator)
+    {
+        $pdf = $pdfGenerator->generateInvoicePdf($invoice);
+
+        $filename = sprintf(
+            '%s_%s_%s.pdf',
+            $invoice->type,
+            $invoice->invoice_number,
+            now()->format('Ymd')
+        );
+
+        return $pdf->download($filename);
+    }
+
+    /**
+     * Preview invoice PDF in browser
+     */
+    public function previewPdf(Invoice $invoice, PdfGenerator $pdfGenerator)
+    {
+        $pdf = $pdfGenerator->generateInvoicePdf($invoice);
+
+        return $pdf->stream();
     }
 }

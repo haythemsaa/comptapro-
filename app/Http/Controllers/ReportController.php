@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Modules\Accounting\Models\{Account, JournalEntry};
 use App\Models\Modules\Invoicing\Models\{Customer, Invoice};
 use App\Models\Modules\Core\Models\Company;
+use App\Services\PdfGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -453,6 +454,117 @@ class ReportController extends Controller
             return $debits - $credits;
         } else {
             return $credits - $debits;
+        }
+    }
+
+    /**
+     * Download Profit & Loss as PDF
+     */
+    public function profitLossPdf(Request $request, PdfGenerator $pdfGenerator)
+    {
+        $companyId = session('current_company_id');
+        $company = Company::with('country')->find($companyId);
+
+        $fromDate = $request->input('from_date', Carbon::now()->startOfYear()->format('Y-m-d'));
+        $toDate = $request->input('to_date', Carbon::now()->format('Y-m-d'));
+
+        $revenueAccounts = Account::where('company_id', $companyId)
+            ->where('type', 'revenue')
+            ->orderBy('code')
+            ->get();
+
+        $expenseAccounts = Account::where('company_id', $companyId)
+            ->where('type', 'expense')
+            ->orderBy('code')
+            ->get();
+
+        // Calculate balances
+        foreach ($revenueAccounts as $account) {
+            $account->balance = $this->calculateAccountBalance($account, $fromDate, $toDate);
+        }
+
+        foreach ($expenseAccounts as $account) {
+            $account->balance = $this->calculateAccountBalance($account, $fromDate, $toDate);
+        }
+
+        $data = [
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
+            'revenueAccounts' => $revenueAccounts,
+            'expenseAccounts' => $expenseAccounts,
+        ];
+
+        $pdf = $pdfGenerator->generateProfitLossPdf($company, $data);
+        return $pdf->download('profit-loss_' . now()->format('Ymd') . '.pdf');
+    }
+
+    /**
+     * Download VAT Report as PDF
+     */
+    public function vatReportPdf(Request $request, PdfGenerator $pdfGenerator)
+    {
+        $companyId = session('current_company_id');
+        $company = Company::with('country')->find($companyId);
+
+        $fromDate = $request->input('from_date', Carbon::now()->startOfMonth()->format('Y-m-d'));
+        $toDate = $request->input('to_date', Carbon::now()->format('Y-m-d'));
+
+        // Calculate VAT by rate
+        $invoiceLines = DB::table('invoice_lines')
+            ->join('invoices', 'invoice_lines.invoice_id', '=', 'invoices.id')
+            ->where('invoices.company_id', $companyId)
+            ->whereBetween('invoices.invoice_date', [$fromDate, $toDate])
+            ->whereIn('invoices.status', ['sent', 'paid'])
+            ->select('invoice_lines.vat_rate',
+                     DB::raw('SUM(invoice_lines.subtotal) as base_ht'),
+                     DB::raw('SUM(invoice_lines.tax_amount) as vat'),
+                     DB::raw('SUM(invoice_lines.total) as total_ttc'))
+            ->groupBy('invoice_lines.vat_rate')
+            ->get();
+
+        $vatByRate = [];
+        foreach ($invoiceLines as $line) {
+            $vatByRate[$line->vat_rate] = [
+                'base_ht' => $line->base_ht,
+                'vat' => $line->vat,
+                'total_ttc' => $line->total_ttc,
+            ];
+        }
+
+        $data = [
+            'fromDate' => $fromDate,
+            'toDate' => $toDate,
+            'vatByRate' => $vatByRate,
+            'vatDeductible' => 0, // TODO: Calculate from purchases
+        ];
+
+        $pdf = $pdfGenerator->generateVatReportPdf($company, $data);
+        return $pdf->download('vat-report_' . now()->format('Ymd') . '.pdf');
+    }
+
+    /**
+     * Helper: Calculate account balance for a period
+     */
+    private function calculateAccountBalance(Account $account, $fromDate, $toDate): float
+    {
+        $debits = DB::table('journal_entry_lines')
+            ->join('journal_entries', 'journal_entry_lines.entry_id', '=', 'journal_entries.id')
+            ->where('journal_entry_lines.account_id', $account->id)
+            ->where('journal_entry_lines.type', 'debit')
+            ->whereBetween('journal_entries.entry_date', [$fromDate, $toDate])
+            ->sum('journal_entry_lines.amount');
+
+        $credits = DB::table('journal_entry_lines')
+            ->join('journal_entries', 'journal_entry_lines.entry_id', '=', 'journal_entries.id')
+            ->where('journal_entry_lines.account_id', $account->id')
+            ->where('journal_entry_lines.type', 'credit')
+            ->whereBetween('journal_entries.entry_date', [$fromDate, $toDate])
+            ->sum('journal_entry_lines.amount');
+
+        if ($account->type === 'revenue') {
+            return $credits - $debits;
+        } else {
+            return $debits - $credits;
         }
     }
 }

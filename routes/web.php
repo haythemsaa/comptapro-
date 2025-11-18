@@ -64,6 +64,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('invoices.disable-payment-link');
     Route::post('/invoices/{invoice}/send-email', [InvoiceController::class, 'sendInvoiceEmail'])
         ->name('invoices.send-email');
+    Route::get('/invoices/{invoice}/pdf', [InvoiceController::class, 'downloadPdf'])
+        ->name('invoices.pdf');
+    Route::get('/invoices/{invoice}/pdf/preview', [InvoiceController::class, 'previewPdf'])
+        ->name('invoices.pdf.preview');
 
     // Products
     Route::resource('products', ProductController::class);
@@ -147,6 +151,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('reports.cash-flow');
     Route::get('/reports/detailed-balance', [ReportController::class, 'detailedBalance'])
         ->name('reports.detailed-balance');
+
+    // Reports - PDF Downloads
+    Route::get('/reports/profit-loss/pdf', [ReportController::class, 'profitLossPdf'])
+        ->name('reports.profit-loss.pdf');
+    Route::get('/reports/vat/pdf', [ReportController::class, 'vatReportPdf'])
+        ->name('reports.vat.pdf');
 });
 
 require __DIR__.'/auth.php';
