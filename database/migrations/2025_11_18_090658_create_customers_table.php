@@ -13,7 +13,24 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
+            $table->string('customer_number')->index();
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->text('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('country_code', 2)->nullable();
+            $table->string('vat_number')->nullable();
+            $table->enum('payment_term', ['immediate', '15_days', '30_days', '45_days', '60_days'])->default('30_days');
+            $table->decimal('credit_limit', 12, 2)->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->unique(['company_id', 'customer_number']);
         });
     }
 

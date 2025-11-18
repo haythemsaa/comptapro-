@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('tax_rates', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->string('code', 10)->index(); // TVA21, TVA20, etc.
+            $table->decimal('rate', 5, 2); // 21.00, 20.00, etc.
+            $table->enum('type', ['sales', 'purchase', 'both'])->default('both');
+            $table->boolean('is_active')->default(true);
+            $table->boolean('is_default')->default(false);
             $table->timestamps();
+
+            $table->unique(['company_id', 'code']);
         });
     }
 

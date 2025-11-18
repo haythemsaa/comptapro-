@@ -13,7 +13,20 @@ return new class extends Migration
     {
         Schema::create('bank_accounts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
+            $table->string('account_name');
+            $table->string('bank_name');
+            $table->string('account_number');
+            $table->string('iban')->nullable();
+            $table->string('swift_bic')->nullable();
+            $table->string('currency', 3)->default('EUR');
+            $table->decimal('opening_balance', 15, 2)->default(0);
+            $table->decimal('current_balance', 15, 2)->default(0);
+            $table->boolean('is_active')->default(true);
+            $table->text('notes')->nullable();
             $table->timestamps();
+
+            $table->index(['company_id', 'is_active']);
         });
     }
 

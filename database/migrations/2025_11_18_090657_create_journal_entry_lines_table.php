@@ -13,7 +13,17 @@ return new class extends Migration
     {
         Schema::create('journal_entry_lines', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('journal_entry_id')->constrained()->onDelete('cascade');
+            $table->foreignId('account_id')->constrained()->onDelete('restrict');
+            $table->text('description')->nullable();
+            $table->decimal('debit', 15, 2)->default(0);
+            $table->decimal('credit', 15, 2)->default(0);
+            $table->foreignId('tax_rate_id')->nullable()->constrained()->onDelete('set null');
+            $table->decimal('tax_amount', 12, 2)->default(0);
+            $table->integer('line_order')->default(0);
             $table->timestamps();
+
+            $table->index(['journal_entry_id', 'line_order']);
         });
     }
 
