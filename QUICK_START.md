@@ -72,50 +72,88 @@ Accédez à **http://localhost:8000**
    - Filtrage et recherche
    - Historique factures
 
-3. **Architecture Multi-Pays**
+3. **Facturation complète** ✨ NOUVEAU
+   - Création devis/factures/avoirs (QT, INV, CN)
+   - Numérotation automatique par type
+   - Lignes de facture avec produits/services
+   - Calcul TVA automatique
+   - Multi-taux de TVA par ligne
+   - Gestion statuts (draft, sent, paid, overdue)
+   - Enregistrement des paiements
+   - Recherche et filtrage avancés
+
+4. **Produits & Services** ✨ NOUVEAU
+   - Catalogue complet avec SKU
+   - Gestion stock (quantité, niveau minimum)
+   - Prix unitaire et prix de revient
+   - Taux de TVA par produit
+   - Catégories
+   - Activation/désactivation
+
+5. **Gestion Sociétés** ✨ NOUVEAU
+   - Création de sociétés multi-pays
+   - Gestion des utilisateurs par société
+   - Rôles (admin, accountant, user)
+   - Protection du dernier admin
+   - Plans d'abonnement
+   - Changement de société en session
+
+6. **Comptabilité complète** ✨ NOUVEAU
+   - Plan comptable hiérarchique
+   - 5 types de comptes (asset, liability, equity, revenue, expense)
+   - Journaux comptables (ventes, achats, banque, caisse, général)
+   - Écritures comptables en partie double
+   - Validation équilibrage débit/crédit
+   - Mise à jour automatique des soldes
+   - Grand livre (General Ledger)
+   - Balance générale (Trial Balance)
+
+7. **Rapports financiers** ✨ NOUVEAU
+   - Compte de Résultat (P&L)
+   - Bilan (Balance Sheet)
+   - Rapport TVA par taux
+   - Balance âgée (Aged Receivables: current, 1-30, 31-60, 61-90, 90+)
+   - Ventes par client
+   - Relevé client
+   - Cash Flow (simplifié)
+
+8. **Architecture Multi-Pays**
    - 🇧🇪 Belgique : 21% TVA, PCN
    - 🇫🇷 France : 20% TVA, PCG 2025
    - 🇨🇭 Suisse : 8.1% TVA, Plan KMU
    - 🇹🇳 Tunisie : 19% TVA
 
-4. **Authentification**
+9. **Authentification**
    - Login/Register
    - Email verification
    - Password reset
    - Profile management
 
-5. **Base de données complète**
-   - 15 tables migrées
-   - Relations optimisées
-   - Multi-tenant ready
-   - Soft deletes
+10. **Base de données complète**
+    - 15 tables migrées
+    - Relations optimisées
+    - Multi-tenant ready
+    - Soft deletes
 
 ### 🚧 À développer (Roadmap)
 
-1. **Facturation** (Priority 1)
-   - Création de devis/factures
-   - Génération PDF
-   - Envoi email
-   - Gestion paiements
-   - Calcul TVA automatique
+1. **Vues Frontend** (Priority 1)
+   - Interfaces Vue.js pour factures
+   - Interfaces Vue.js pour produits
+   - Interfaces Vue.js pour comptabilité
+   - Interfaces Vue.js pour rapports
+   - Interfaces Vue.js pour sociétés
 
-2. **Comptabilité** (Priority 2)
-   - Plan comptable pré-configuré
-   - Saisie écritures
-   - Journaux comptables
-   - Grand livre, Balance
+2. **Génération PDF** (Priority 2)
+   - Templates de factures
+   - Templates de rapports
+   - Envoi par email
 
-3. **Produits & Services** (Priority 3)
-   - Catalogue produits
-   - Gestion stock
-   - Prix par pays
-   - Catégories
-
-4. **Reports & Analytics** (Priority 4)
-   - P&L, Bilan
+3. **Modules avancés** (Priority 3)
+   - Module Achats
+   - Module Bancaire
+   - Module Taxes avancé
    - Export FEC (France)
-   - Déclarations TVA
-   - Rapports personnalisés
 
 ## 🏗️ Structure du projet
 
@@ -123,26 +161,36 @@ Accédez à **http://localhost:8000**
 comptapro-/
 ├── app/
 │   ├── Http/Controllers/
-│   │   ├── DashboardController.php ✅
-│   │   ├── CustomerController.php ✅
-│   │   ├── InvoiceController.php ⚠️
-│   │   ├── ProductController.php ⚠️
-│   │   └── CompanyController.php ⚠️
+│   │   ├── DashboardController.php ✅ (77 lignes)
+│   │   ├── CustomerController.php ✅ (158 lignes)
+│   │   ├── InvoiceController.php ✅ (355 lignes) ✨
+│   │   ├── ProductController.php ✅ (162 lignes) ✨
+│   │   ├── CompanyController.php ✅ (242 lignes) ✨
+│   │   ├── AccountingController.php ✅ (405 lignes) ✨
+│   │   └── ReportController.php ✅ (376 lignes) ✨
 │   └── Models/Modules/
 │       ├── Core/ (Country, Company) ✅
-│       ├── Accounting/ (Account, Journal) ✅
-│       ├── Invoicing/ (Customer, Invoice) ✅
-│       ├── Tax/ ⚠️
-│       ├── Banking/ ⚠️
-│       ├── Purchases/ ⚠️
-│       └── Products/ ⚠️
+│       ├── Accounting/ (Account, Journal, JournalEntry) ✅
+│       ├── Invoicing/ (Customer, Invoice, InvoiceLine) ✅
+│       ├── Products/ (Product) ✅
+│       ├── Tax/ ⚠️ (à développer)
+│       ├── Banking/ ⚠️ (à développer)
+│       └── Purchases/ ⚠️ (à développer)
 ├── database/
 │   ├── migrations/ (15 tables) ✅
 │   └── seeders/ (4 countries, 2 companies) ✅
+├── routes/
+│   └── web.php ✅ (40+ routes configurées)
 └── resources/js/Pages/
-    └── Dashboard.vue ✅ (Bootstrap 5)
+    ├── Dashboard.vue ✅ (Bootstrap 5)
+    ├── Customers/Index.vue ✅
+    ├── Invoices/ ⚠️ (à créer: Index, Create, Edit, Show)
+    ├── Products/ ⚠️ (à créer: Index, Create, Edit)
+    ├── Companies/ ⚠️ (à créer: Index, Create, Edit, Show)
+    ├── Accounting/ ⚠️ (à créer: Accounts, Journals, Entries)
+    └── Reports/ ⚠️ (à créer: toutes les vues)
 
-✅ Complété | ⚠️ À développer
+✅ Complété | ✨ Nouveau | ⚠️ À développer
 ```
 
 ## 🎨 Technologies
