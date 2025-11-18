@@ -150,24 +150,27 @@ Accédez à **http://localhost:8000**
 
 ### 🚧 À développer (Roadmap)
 
-1. **Vues Frontend restantes** (Priority 1)
-   - ✅ ~~Interfaces pour factures~~ FAIT
-   - ✅ ~~Interfaces pour produits~~ FAIT
-   - ✅ ~~Navigation complète~~ FAIT
-   - ⚠️ Interfaces pour comptabilité (en cours)
-   - ⚠️ Interfaces détaillées pour rapports (en cours)
-   - ⚠️ Interfaces pour sociétés (en cours)
+1. **✅ Priority 1: Frontend complet** - TERMINÉ! 🎉
+   - ✅ Interfaces pour factures (4 vues)
+   - ✅ Interfaces pour produits (3 vues)
+   - ✅ Interfaces pour sociétés (4 vues)
+   - ✅ Interfaces pour comptabilité (1 vue)
+   - ✅ Interfaces pour rapports (3 vues)
+   - ✅ Navigation complète Bootstrap 5
+   - **Total: 15+ vues Vue.js créées (2,900+ lignes)**
 
-2. **Génération PDF** (Priority 2)
-   - Templates de factures
-   - Templates de rapports
-   - Envoi par email
+2. **Génération PDF** (Priority 2) - SUIVANT
+   - Templates de factures professionnelles
+   - Templates de rapports (P&L, Bilan, TVA)
+   - Envoi par email avec attachements
+   - Configuration des en-têtes/pieds de page
 
 3. **Modules avancés** (Priority 3)
-   - Module Achats
-   - Module Bancaire
+   - Module Achats complet
+   - Module Bancaire avec rapprochement
    - Module Taxes avancé
    - Export FEC (France)
+   - Gestion des immobilisations
 
 ## 🏗️ Structure du projet
 
