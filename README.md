@@ -46,13 +46,16 @@
 - ✅ **Export PDF** : Tous les rapports
 
 ### 🎨 **Design Moderne**
-- ✅ **Sidebar animée** : Collapsible avec animations fluides
-- ✅ **Dashboard visuel** : Stats, charts, graphiques
-- ✅ **Dark mode** : Support complet
+- ✅ **Sidebar animée** : Collapsible avec animations fluides (260px → 70px)
+- ✅ **Dashboard visuel** : Stats, charts, graphiques interactifs
+- ✅ **Dark mode** : Support complet avec toggle
 - ✅ **Responsive** : Mobile, Tablet, Desktop
-- ✅ **50+ animations CSS** : Transitions professionnelles
-- ✅ **Composants UI** : Modal, Alert, Card, Loading
-- ✅ **Notifications** : Système de toast intégré
+- ✅ **50+ animations CSS** : fadeIn, fadeInUp, hover-lift, stagger
+- ✅ **Composants UI** : Modal, Alert, Card, Loading, Toast
+- ✅ **Notifications Toast** : Système global avec 4 variants
+- ✅ **Onboarding** : Tutoriel interactif pour nouveaux utilisateurs
+- ✅ **Settings Page** : Configuration complète (5 tabs)
+- ✅ **Card-based Layouts** : Grilles modernes pour Customers & Invoices
 
 ### 🏢 **Multi-tenant**
 - ✅ **Sociétés multiples** : Un utilisateur, plusieurs sociétés
@@ -216,19 +219,30 @@ comptapro/
 ├── resources/
 │   ├── css/
 │   │   ├── app.css
-│   │   └── animations.css
+│   │   └── animations.css (50+ animations)
 │   ├── js/
 │   │   ├── Components/
-│   │   │   ├── Modal.vue
-│   │   │   ├── Alert.vue
-│   │   │   ├── Card.vue
-│   │   │   └── Loading.vue
+│   │   │   ├── Modal.vue (Modales réutilisables)
+│   │   │   ├── Alert.vue (Alertes 4 variants)
+│   │   │   ├── Card.vue (Cards 4 variants)
+│   │   │   ├── Loading.vue (4 types de loaders)
+│   │   │   ├── Toast.vue (Notifications globales)
+│   │   │   └── Onboarding.vue (Tutoriel 5 étapes)
 │   │   ├── Layouts/
-│   │   │   └── AuthenticatedLayout.vue
+│   │   │   └── AuthenticatedLayout.vue (Sidebar + Header)
 │   │   └── Pages/
-│   │       ├── Dashboard.vue
-│   │       ├── Customers/
-│   │       ├── Invoices/
+│   │       ├── Dashboard.vue (Vue d'ensemble)
+│   │       ├── Settings.vue (Configuration 5 tabs)
+│   │       ├── Customers/ (CRUD moderne)
+│   │       │   ├── Index.vue (Grille de cards)
+│   │       │   ├── Create.vue
+│   │       │   ├── Edit.vue
+│   │       │   └── Show.vue
+│   │       ├── Invoices/ (CRUD moderne)
+│   │       │   ├── Index.vue (Grille de cards)
+│   │       │   ├── Create.vue
+│   │       │   ├── Edit.vue
+│   │       │   └── Show.vue
 │   │       ├── Products/
 │   │       ├── Suppliers/
 │   │       ├── Purchases/
@@ -263,10 +277,12 @@ ComptaPro utilise un système de design moderne et cohérent :
 - **Danger** : #ef4444 (Rouge)
 
 ### **Composants UI**
-- **Modal** : 4 tailles (sm, md, lg, xl)
-- **Alert** : 4 variants (success, info, warning, danger)
-- **Card** : 4 variants (default, gradient, bordered, elevated)
-- **Loading** : 4 types (spinner, dots, pulse, bars)
+- **Modal** : 4 tailles (sm, md, lg, xl) avec animations scale
+- **Alert** : 4 variants (success, info, warning, danger) avec auto-close
+- **Card** : 4 variants (default, gradient, bordered, elevated) avec hover-lift
+- **Loading** : 4 types (spinner, dots, pulse, bars) avec 5 variants de couleur
+- **Toast** : Notifications globales avec 4 variants et progress bar
+- **Onboarding** : Tutoriel interactif en 5 étapes avec démos visuelles
 
 ### **Animations**
 - 50+ animations CSS
@@ -275,6 +291,38 @@ ComptaPro utilise un système de design moderne et cohérent :
 - Stagger animations
 
 Voir [DESIGN_GUIDE.md](./DESIGN_GUIDE.md) pour plus de détails.
+
+### **Utilisation des Composants**
+
+#### **Toast Notifications**
+```javascript
+// Afficher une notification success
+window.$toast.success('Client créé avec succès', 'Succès');
+
+// Notification error
+window.$toast.error('Erreur lors de la création', 'Erreur');
+
+// Notification warning
+window.$toast.warning('Attention, données non sauvegardées', 'Attention');
+
+// Notification info
+window.$toast.info('Nouvelle mise à jour disponible', 'Information');
+```
+
+#### **Onboarding**
+Le système d'onboarding s'affiche automatiquement pour les nouveaux utilisateurs. Il peut être relancé manuellement depuis les paramètres ou en appelant :
+```javascript
+// Afficher l'onboarding manuellement
+onboardingRef.value.show();
+```
+
+#### **Settings Page**
+5 onglets de configuration disponibles :
+- **Profile** : Informations personnelles et mot de passe
+- **Appearance** : Thème (light/dark/auto), sidebar compacte, animations
+- **Notifications** : Préférences email, push, desktop
+- **Language** : Langue, format de date, timezone
+- **About** : Informations sur l'application, version, système
 
 ---
 

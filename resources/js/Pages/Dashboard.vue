@@ -2,6 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
+import Onboarding from '@/Components/Onboarding.vue';
 
 const props = defineProps({
     companies: Array,
@@ -43,6 +44,11 @@ const quickActions = [
     { title: 'Nouveau produit', icon: 'box-seam', color: 'info', route: 'products.create' },
     { title: 'Rapports', icon: 'graph-up', color: 'warning', route: 'reports.index' },
 ];
+
+// Handle onboarding completion
+const handleOnboardingComplete = () => {
+    console.log('Onboarding completed!');
+};
 </script>
 
 <template>
@@ -412,6 +418,9 @@ const quickActions = [
                 </Link>
             </div>
         </div>
+
+        <!-- Onboarding Component -->
+        <Onboarding @complete="handleOnboardingComplete" />
     </AuthenticatedLayout>
 </template>
 
