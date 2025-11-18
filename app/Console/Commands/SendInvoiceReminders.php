@@ -114,38 +114,28 @@ class SendInvoiceReminders extends Command
             return;
         }
 
-        // Generate reminder message based on type
-        $message = $this->generateReminderMessage($invoice, $type, $daysOverdue);
+        try {
+            // Send actual email using InvoiceReminderMail mailable
+            \Mail::to($customer->email)->send(new \App\Mail\InvoiceReminderMail($invoice, $type, $daysOverdue));
 
-        // Record reminder
-        InvoiceReminder::create([
-            'invoice_id' => $invoice->id,
-            'type' => $type,
-            'days_overdue' => $daysOverdue,
-            'sent_at' => now(),
-            'sent_to' => $customer->email,
-            'message' => $message,
-        ]);
+            // Record reminder
+            InvoiceReminder::create([
+                'invoice_id' => $invoice->id,
+                'type' => $type,
+                'days_overdue' => $daysOverdue,
+                'sent_at' => now(),
+                'sent_to' => $customer->email,
+            ]);
 
-        // TODO: Send actual email using Mail facade
-        // Mail::to($customer->email)->send(new InvoiceReminderMail($invoice, $message));
-
-        $this->line("📨 Sent {$type} to {$customer->name} ({$customer->email}) - Invoice {$invoice->invoice_number}");
+            $this->line("📨 Sent {$type} to {$customer->name} ({$customer->email}) - Invoice {$invoice->invoice_number}");
+        } catch (\Exception $e) {
+            $this->error("❌ Failed to send reminder for invoice {$invoice->invoice_number}: {$e->getMessage()}");
+            \Log::error('Failed to send invoice reminder', [
+                'invoice_id' => $invoice->id,
+                'type' => $type,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
-    /**
-     * Generate reminder message
-     */
-    private function generateReminderMessage(Invoice $invoice, string $type, int $daysOverdue): string
-    {
-        $messages = [
-            'first_reminder' => "Bonjour,\n\nNous constatons que la facture {$invoice->invoice_number} d'un montant de {$invoice->total}€ est en retard de {$daysOverdue} jours.\n\nMerci de procéder au règlement dans les plus brefs délais.",
-
-            'second_reminder' => "Bonjour,\n\nMalgré notre précédente relance, la facture {$invoice->invoice_number} d'un montant de {$invoice->total}€ n'a toujours pas été réglée ({$daysOverdue} jours de retard).\n\nNous vous demandons de bien vouloir régulariser cette situation rapidement.",
-
-            'final_notice' => "Bonjour,\n\nCeci est une mise en demeure concernant la facture {$invoice->invoice_number} d'un montant de {$invoice->total}€, en retard de {$daysOverdue} jours.\n\nSans règlement sous 7 jours, nous serons contraints d'engager des poursuites.",
-        ];
-
-        return $messages[$type] ?? '';
-    }
 }

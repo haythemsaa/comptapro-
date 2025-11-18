@@ -157,6 +157,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('reports.profit-loss.pdf');
     Route::get('/reports/vat/pdf', [ReportController::class, 'vatReportPdf'])
         ->name('reports.vat.pdf');
+    Route::get('/reports/balance-sheet/pdf', [ReportController::class, 'balanceSheetPdf'])
+        ->name('reports.balance-sheet.pdf');
 });
 
 require __DIR__.'/auth.php';

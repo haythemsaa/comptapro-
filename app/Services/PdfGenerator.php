@@ -119,6 +119,23 @@ class PdfGenerator
     }
 
     /**
+     * Generate Balance Sheet PDF
+     */
+    public function generateBalanceSheetPdf(Company $company, $data, array $options = []): \Barryvdh\DomPDF\PDF
+    {
+        $pdfData = array_merge($data, [
+            'company' => $company,
+            'showFooter' => $options['showFooter'] ?? true,
+            'showHeader' => $options['showHeader'] ?? true,
+        ]);
+
+        $pdf = Pdf::loadView('pdf.reports.balance-sheet', $pdfData);
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf;
+    }
+
+    /**
      * Helper: Format currency
      */
     public static function formatCurrency(float $amount, string $currency = 'EUR'): string

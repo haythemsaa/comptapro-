@@ -399,12 +399,40 @@ class InvoiceController extends Controller
     /**
      * Send invoice by email with payment link
      */
-    public function sendInvoiceEmail(Invoice $invoice)
+    public function sendInvoiceEmail(Request $request, Invoice $invoice)
     {
-        // TODO: Implement email sending with Mailable
-        // This would send the invoice PDF + payment link to customer
+        $request->validate([
+            'email' => 'required|email',
+            'message' => 'nullable|string|max:1000',
+            'attach_pdf' => 'nullable|boolean',
+        ]);
 
-        return back()->with('success', 'Facture envoyée par email.');
+        $email = $request->input('email', $invoice->customer->email);
+        $message = $request->input('message', '');
+        $attachPdf = $request->input('attach_pdf', true);
+
+        if (!$email) {
+            return back()->withErrors(['email' => 'Aucune adresse email disponible pour ce client.']);
+        }
+
+        try {
+            // Send email using InvoiceMail mailable
+            \Mail::to($email)->send(new \App\Mail\InvoiceMail($invoice, $message, $attachPdf));
+
+            // Update invoice status if it's a draft quote/invoice
+            if (in_array($invoice->status, ['draft']) && $invoice->type !== 'credit_note') {
+                $invoice->update(['status' => 'sent']);
+            }
+
+            return back()->with('success', 'Facture envoyée par email avec succès.');
+        } catch (\Exception $e) {
+            \Log::error('Failed to send invoice email: ' . $e->getMessage(), [
+                'invoice_id' => $invoice->id,
+                'email' => $email,
+            ]);
+
+            return back()->withErrors(['email' => 'Erreur lors de l\'envoi de l\'email : ' . $e->getMessage()]);
+        }
     }
 
     /**

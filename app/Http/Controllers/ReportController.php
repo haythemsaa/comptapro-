@@ -543,6 +543,52 @@ class ReportController extends Controller
     }
 
     /**
+     * Download Balance Sheet as PDF
+     */
+    public function balanceSheetPdf(Request $request, PdfGenerator $pdfGenerator)
+    {
+        $companyId = session('current_company_id');
+        $company = Company::with('country')->find($companyId);
+
+        $asOfDate = $request->input('as_of_date', Carbon::now()->format('Y-m-d'));
+
+        // Get asset accounts
+        $assetAccounts = Account::where('company_id', $companyId)
+            ->where('type', 'asset')
+            ->where('is_active', true)
+            ->get();
+
+        // Get liability accounts
+        $liabilityAccounts = Account::where('company_id', $companyId)
+            ->where('type', 'liability')
+            ->where('is_active', true)
+            ->get();
+
+        // Get equity accounts
+        $equityAccounts = Account::where('company_id', $companyId)
+            ->where('type', 'equity')
+            ->where('is_active', true)
+            ->get();
+
+        $totalAssets = $assetAccounts->sum('balance');
+        $totalLiabilities = $liabilityAccounts->sum('balance');
+        $totalEquity = $equityAccounts->sum('balance');
+
+        $data = [
+            'asOfDate' => $asOfDate,
+            'assetAccounts' => $assetAccounts,
+            'liabilityAccounts' => $liabilityAccounts,
+            'equityAccounts' => $equityAccounts,
+            'totalAssets' => $totalAssets,
+            'totalLiabilities' => $totalLiabilities,
+            'totalEquity' => $totalEquity,
+        ];
+
+        $pdf = $pdfGenerator->generateBalanceSheetPdf($company, $data);
+        return $pdf->download('balance-sheet_' . now()->format('Ymd') . '.pdf');
+    }
+
+    /**
      * Helper: Calculate account balance for a period
      */
     private function calculateAccountBalance(Account $account, $fromDate, $toDate): float
