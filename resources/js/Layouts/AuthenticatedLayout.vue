@@ -1,5 +1,18 @@
 <template>
     <div class="layout-wrapper">
+        <!-- Global Search Modal -->
+        <GlobalSearch v-model="showGlobalSearch" />
+
+        <!-- Keyboard Shortcuts Help -->
+        <KeyboardShortcutsHelp :show="showShortcutsHelp" @close="showShortcutsHelp = false" />
+
+        <!-- Quick Actions FAB -->
+        <QuickActions
+            :is-open="true"
+            @open-search="showGlobalSearch = true"
+            @export="handleQuickExport"
+        />
+
         <!-- Sidebar -->
         <aside class="sidebar" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
             <div class="sidebar-header">
@@ -137,10 +150,18 @@
                     </div>
                 </div>
                 <div class="header-right">
-                    <!-- Theme Toggle -->
-                    <button class="header-icon-btn" @click="toggleTheme" title="Changer de thème">
-                        <i class="bi" :class="darkMode ? 'bi-sun-fill' : 'bi-moon-fill'"></i>
+                    <!-- Global Search Button -->
+                    <button class="header-icon-btn" @click="showGlobalSearch = true" title="Recherche globale (Ctrl+K)">
+                        <i class="bi bi-search"></i>
                     </button>
+
+                    <!-- Keyboard Shortcuts -->
+                    <button class="header-icon-btn" @click="showShortcutsHelp = true" title="Raccourcis clavier (?)">
+                        <i class="bi bi-keyboard"></i>
+                    </button>
+
+                    <!-- Theme Toggle -->
+                    <DarkModeToggle />
 
                     <!-- Notifications -->
                     <div class="dropdown">
@@ -259,6 +280,18 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import { ref, onMounted, onUnmounted } from 'vue';
+import GlobalSearch from '@/Components/GlobalSearch.vue';
+import KeyboardShortcutsHelp from '@/Components/KeyboardShortcutsHelp.vue';
+import DarkModeToggle from '@/Components/DarkModeToggle.vue';
+import QuickActions from '@/Components/QuickActions.vue';
+import { useComptaProShortcuts } from '@/Composables/useKeyboardShortcuts';
+import { useDataExport } from '@/Composables/useDataExport';
+
+// Initialize keyboard shortcuts
+const { showHelp: showShortcutsHelp } = useComptaProShortcuts();
+
+// Initialize data export
+const { downloadCSV } = useDataExport();
 
 // State
 const sidebarCollapsed = ref(localStorage.getItem('sidebar-collapsed') === 'true');
@@ -269,6 +302,7 @@ const accountingOpen = ref(true);
 const searchQuery = ref('');
 const notifications = ref(3);
 const isMobile = ref(false);
+const showGlobalSearch = ref(false);
 
 // Toggle sidebar
 const toggleSidebar = () => {
@@ -292,8 +326,14 @@ const toggleTheme = () => {
 
 // Handle search
 const handleSearch = () => {
-    // Implement search functionality
-    console.log('Search:', searchQuery.value);
+    if (searchQuery.value.trim()) {
+        showGlobalSearch.value = true;
+    }
+};
+
+// Handle quick export
+const handleQuickExport = () => {
+    window.$toast?.info('Fonction d\'export disponible sur chaque page', 'Export');
 };
 
 // Check mobile
