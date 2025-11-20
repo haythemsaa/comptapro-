@@ -1,0 +1,201 @@
+{
+  "common": {
+    "welcome": "مرحبا",
+    "hello": "أهلا",
+    "goodbye": "وداعا",
+    "yes": "نعم",
+    "no": "لا",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "search": "بحث",
+    "filter": "تصفية",
+    "export": "تصدير",
+    "import": "استيراد",
+    "download": "تحميل",
+    "upload": "رفع",
+    "print": "طباعة",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "finish": "إنهاء",
+    "close": "إغلاق",
+    "confirm": "تأكيد",
+    "submit": "إرسال",
+    "loading": "جاري التحميل...",
+    "success": "نجح",
+    "error": "خطأ",
+    "warning": "تحذير",
+    "info": "معلومة"
+  },
+
+  "menu": {
+    "dashboard": "لوحة القيادة",
+    "accounting": "المحاسبة",
+    "invoicing": "الفوترة",
+    "purchases": "المشتريات",
+    "payroll": "الرواتب",
+    "banking": "البنوك",
+    "tax": "الضرائب",
+    "reports": "التقارير",
+    "ai_assistant": "المساعد الذكي",
+    "settings": "الإعدادات"
+  },
+
+  "payroll": {
+    "title": "إدارة الرواتب",
+    "employees": "الموظفون",
+    "employee": "موظف",
+    "add_employee": "إضافة موظف",
+    "payslips": "بطاقات الأجر",
+    "payslip": "بطاقة الأجر",
+    "generate_payslip": "إنشاء بطاقة أجر",
+    "cnss_declarations": "تصاريح الصندوق الوطني للضمان الاجتماعي",
+    "cnss_declaration": "تصريح الصندوق الوطني",
+    "leave_requests": "طلبات الإجازة",
+    "leave_balance": "رصيد الإجازات",
+
+    "employee_number": "رقم الموظف",
+    "first_name": "الاسم",
+    "last_name": "اللقب",
+    "cin": "رقم بطاقة التعريف الوطنية",
+    "cnss_number": "رقم الضمان الاجتماعي",
+    "birth_date": "تاريخ الميلاد",
+    "marital_status": "الحالة الاجتماعية",
+    "children_count": "عدد الأطفال",
+    "hire_date": "تاريخ التوظيف",
+    "position": "المنصب",
+    "department": "القسم",
+    "contract_type": "نوع العقد",
+    "base_salary": "الأجر الأساسي",
+
+    "gross_salary": "الأجر الإجمالي",
+    "net_salary": "الأجر الصافي",
+    "cnss_employee": "اقتطاع الضمان الاجتماعي - الموظف",
+    "cnss_employer": "مساهمة الضمان الاجتماعي - المؤجر",
+    "irpp": "الضريبة على الدخل الشخصي",
+    "transport_allowance": "منحة النقل",
+    "food_allowance": "منحة الطعام",
+    "seniority_bonus": "علاوة الأقدمية",
+    "performance_bonus": "مكافأة الأداء",
+
+    "single": "أعزب",
+    "married": "متزوج",
+    "divorced": "مطلق",
+    "widowed": "أرمل"
+  },
+
+  "tax": {
+    "title": "الضرائب",
+    "vat": "الأداء على القيمة المضافة",
+    "corporate_tax": "الضريبة على الشركات",
+    "tfp": "مساهمة التكوين المهني",
+    "tcl": "الضريبة على المحلات التجارية",
+    "foprolos": "صندوق النهوض بالمسكن لفائدة الأجراء",
+    "withholding_tax": "الخصم من المورد",
+    "tax_calendar": "الروزنامة الجبائية",
+
+    "vat_collected": "الأداء المجمع",
+    "vat_deductible": "الأداء القابل للخصم",
+    "vat_to_pay": "الأداء الواجب دفعه",
+    "vat_credit": "فائض الأداء",
+
+    "generate_declaration": "إنشاء تصريح",
+    "submit_declaration": "إرسال التصريح",
+    "due_date": "تاريخ الاستحقاق",
+    "payment_date": "تاريخ الدفع",
+    "status": "الحالة",
+    "draft": "مسودة",
+    "submitted": "مرسل",
+    "paid": "مدفوع",
+    "late": "متأخر"
+  },
+
+  "banking": {
+    "title": "الخدمات البنكية",
+    "accounts": "الحسابات البنكية",
+    "transactions": "العمليات",
+    "reconciliation": "المطابقة البنكية",
+    "import_statement": "استيراد كشف حساب",
+    "reconcile": "مطابقة",
+    "matched": "مطابق",
+    "unmatched": "غير مطابق",
+    "balance": "الرصيد",
+    "bank_balance": "الرصيد البنكي",
+    "accounting_balance": "الرصيد المحاسبي",
+    "difference": "الفرق"
+  },
+
+  "ai": {
+    "title": "المساعد الذكي",
+    "assistant": "المساعد",
+    "ask_question": "اطرح سؤالاً",
+    "analyzing": "جاري التحليل...",
+    "cash_flow_prediction": "توقع التدفقات النقدية",
+    "anomaly_detection": "كشف الشذوذ",
+    "tax_optimization": "تحسين الضرائب",
+    "ocr_extraction": "استخراج البيانات التلقائي",
+
+    "suggestions": "اقتراحات",
+    "recommendations": "توصيات",
+    "confidence": "مستوى الثقة",
+    "analysis": "التحليل"
+  },
+
+  "elfatoora": {
+    "title": "الفاتورة الإلكترونية",
+    "sign_invoice": "التوقيع الإلكتروني للفاتورة",
+    "transmit_invoice": "إرسال الفاتورة",
+    "validate_invoice": "التحقق من الفاتورة",
+    "signed": "موقعة",
+    "transmitted": "مرسلة",
+    "validated": "مصادق عليها",
+    "qr_code": "رمز الاستجابة السريعة",
+    "signature": "التوقيع الإلكتروني"
+  },
+
+  "reports": {
+    "title": "التقارير",
+    "profit_loss": "قائمة الدخل",
+    "balance_sheet": "الميزانية العمومية",
+    "cash_flow": "قائمة التدفقات النقدية",
+    "vat_report": "تقرير الأداء على القيمة المضافة",
+    "aged_receivables": "المديونية حسب الآجال",
+    "trial_balance": "ميزان المراجعة",
+    "general_ledger": "دفتر الأستاذ العام"
+  },
+
+  "dashboard": {
+    "revenue": "الإيرادات",
+    "expenses": "المصاريف",
+    "profit": "الربح",
+    "cash": "النقدية",
+    "receivables": "المديونية",
+    "payables": "الذمم الدائنة",
+    "this_month": "هذا الشهر",
+    "this_year": "هذه السنة",
+    "vs_last_year": "مقارنة بالسنة الماضية"
+  },
+
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "email": "يرجى إدخال بريد إلكتروني صالح",
+    "min": "الحد الأدنى هو :min",
+    "max": "الحد الأقصى هو :max",
+    "numeric": "يجب أن يكون رقماً",
+    "date": "يرجى إدخال تاريخ صالح"
+  },
+
+  "messages": {
+    "success_save": "تم الحفظ بنجاح",
+    "success_delete": "تم الحذف بنجاح",
+    "success_update": "تم التحديث بنجاح",
+    "confirm_delete": "هل أنت متأكد من الحذف؟",
+    "no_results": "لا توجد نتائج",
+    "loading": "جاري التحميل...",
+    "error_occurred": "حدث خطأ"
+  }
+}
